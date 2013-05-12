@@ -19,6 +19,18 @@ Python, pip, and virtualenv.  Using
 Will get a development/deployment environment running.  Better packaging support
 will come along as the project evolves (pull requests welcome!).
 
+Acceptance Testing
+------------------
+Somewhere further down the line, I'll start writing unit tests.  For now, there's
+some (one) very broad acceptance tests, written using Python's [behave], an 
+implementation of Cucumber.  Simply type
+
+    behave
+
+At your prompt (once you've setup the environment!) to run the acceptance tests.
+
+[behave]: http://pythonhosted.org/behave/
+
 Licensing
 ---------
 Freely available for all and sundry under the MIT license!
