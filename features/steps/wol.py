@@ -4,8 +4,8 @@ import requests
 HOST = 'localhost:5000'
 
 
-@given('there is a computer named "{hostname}"')
-def impl(context, hostname):
+@given('there is {} computer named "{hostname}"')
+def impl(context, _, hostname):
     context.hostname = hostname
 
 
@@ -16,11 +16,24 @@ def impl(context):
         data={'isAwake': True})
 
 
-@then('we get back a 200')
-def impl(context):
-    assert context.response.status_code == 200
+@then('we get back a {:d}')
+def impl(context, expected_status):
+    assert context.response.status_code == expected_status
 
 
-@then('we get back a JSON representation of its current state')
+@then('we get informed it {state} {stateType}')
+def impl(context, state, stateType):
+    expected_value = (state == "is")
+    expected_key = "{}{}".format(state, stateType.capitalize())
+    assert context.response.json() == {expected_key: expected_value}
+
+
+@given('someone named "{name}" has {dont_care} alarm')
+def impl(context, name, dont_care):
+    context.room_name = name
+
+@when('we tell it to start sounding')
 def impl(context):
-    assert context.response.json() == {'isAwake': True}
+    context.response = requests.put(
+        'http://{0}/alarm/{1}/'.format(HOST, context.room_name),
+        data={'isSounding': True})
